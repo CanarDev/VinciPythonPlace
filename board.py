@@ -10,8 +10,16 @@ pygame.display.set_caption("VinciPythonPlace")
 
 
 session = True 
-pixel = Pixel()
 pixelColor = (110, 200, 80)
+boardPixels = []
+for i in range(16):# lignes
+    row = []
+    for j in range(16):# colonnes
+        row.append(Pixel(i, j))
+    boardPixels.append(row)
+
+            
+
 while session:
     ecran.fill((110, 110, 110))
 
@@ -25,20 +33,22 @@ while session:
                 session = False
         if event.type == pygame.QUIT:
             session = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_t: #Test command : T key
-                print("IsClicked !")
-                pixel.isClicked(pixelColor)
         # handle MOUSEBUTTONUP
         if event.type == pygame.MOUSEBUTTONUP:
             print("j'ai cliqué")
-            pos = pygame.mouse.get_pos()
-            
-            pixel.isClicked(pixelColor)
+            posX, posY = pygame.mouse.get_pos()
+            posX = int(posX/30)
+            posY = int(posY/30)
+            if posX < 16 and posY < 16:
+                boardPixels[posX][posY].isClicked(pixelColor)
+
+            print(posX, posY)
 
 
+    for i in range(16):# lignes
+        for j in range(16):# colonnes
+            boardPixels[i][j].draw(ecran)
 
-    pixel.draw(ecran)
     # on met à jour l'écran
     pygame.display.flip()
 

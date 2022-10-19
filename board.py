@@ -1,3 +1,4 @@
+import imp
 import pygame
 from pixel import Pixel
 
@@ -41,8 +42,6 @@ while session:
             posY = int(posY/30)
             if posX < 16 and posY < 16:
                 boardPixels[posX][posY].isClicked(pixelColor)
-
-            print(posX, posY)
 
 
     for i in range(16):# lignes

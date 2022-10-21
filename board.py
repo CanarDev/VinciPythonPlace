@@ -1,4 +1,3 @@
-import imp
 import pygame
 from pixel import Pixel
 
@@ -6,16 +5,15 @@ module_charge = pygame.init()
 print(module_charge)
 
 # Création de la fenêtre
-ecran = pygame.display.set_mode((1000,800))
 pygame.display.set_caption("VinciPythonPlace")
 
 
 session = True 
 pixelColor = (110, 200, 80)
 boardPixels = []
-for i in range(16):# lignes
+for i in range(16):
     row = []
-    for j in range(16):# colonnes
+    for j in range(16):
         row.append(Pixel(i, j))
     boardPixels.append(row)
 
@@ -44,8 +42,8 @@ while session:
                 boardPixels[posX][posY].isClicked(pixelColor)
 
 
-    for i in range(16):# lignes
-        for j in range(16):# colonnes
+    for i in range(16):
+        for j in range(16):
             boardPixels[i][j].draw(ecran)
 
     # on met à jour l'écran

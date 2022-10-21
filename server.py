@@ -1,30 +1,58 @@
 import socket
+from _thread import *
+import sys
 
-def server_program():
-    # get the hostname
-    host = socket.gethostname()
-    port = 3000  # initiate port no above 1024
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    server_socket = socket.socket()  # get instance
-    # look closely. The bind() function takes tuple as argument
-    server_socket.bind((host, port))  # bind host address and port together
+server = '127.0.0.1'
+port = 5432
 
-    # configure how many client the server can listen simultaneously
-    server_socket.listen(2)
-    conn, address = server_socket.accept()  # accept new connection
-    print("Connection from: " + str(address))
+server_ip = socket.gethostbyname(server)
+
+try:
+    s.bind((server, port))
+
+except socket.error as e:
+    print(str(e))
+
+s.listen(2)
+print("Waiting for a connection")
+
+currentId = "0"
+pos = ["0:50,50", "1:100,100"]
+def threaded_client(conn):
+    global currentId, pos
+    conn.send(str.encode(currentId))
+    currentId = "1"
+    reply = ''
     while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
-        data = conn.recv(1024).decode()
-        if not data:
-            # if data is not received break
+        try:
+            data = conn.recv(2048)
+            reply = data.decode('utf-8')
+            if not data:
+                conn.send(str.encode("Goodbye"))
+                break
+            else:
+                print("Recieved: " + reply)
+                arr = reply.split(":")
+                id = int(arr[0])
+                pos[id] = reply
+
+                if id == 0: nid = 1
+                if id == 1: nid = 0
+
+                reply = pos[nid][:]
+                print("Sending: " + reply)
+
+            conn.sendall(str.encode(reply))
+        except:
             break
-        print("from connected user: " + str(data))
-        data = input(' -> ')
-        conn.send(data.encode())  # send data to the client
 
-    conn.close()  # close the connection
+    print("Connection Closed")
+    conn.close()
 
+while True:
+    conn, addr = s.accept()
+    print("Connected to: ", addr)
 
-if __name__ == '__main__':
-    server_program()
+    start_new_thread(threaded_client, (conn,))

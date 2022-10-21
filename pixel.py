@@ -7,6 +7,9 @@ class Pixel :
         self.y = y
         print("pixel Init")
     def draw (self, ecran):
-        pygame.draw.rect(ecran, self.color, (self.x*30, self.y*30, 30, 30)) # on dessine un pixel
+        print(self.x)
+        print(self.y)
+        print(self.color)
+        pygame.draw.rect(ecran, self.color, (self.x*100, self.y*100, 30, 30)) # on dessine un pixel
     def isClicked (self, pixelColor):
         self.color = pixelColor

@@ -5,6 +5,7 @@ module_charge = pygame.init()
 print(module_charge)
 
 # Création de la fenêtre
+g = pygame.display.set_mode((1000,800))
 pygame.display.set_caption("VinciPythonPlace")
 
 
@@ -20,7 +21,7 @@ for i in range(16):
             
 
 while session:
-    ecran.fill((110, 110, 110))
+    g.fill((110, 110, 110))
 
 
 
@@ -44,7 +45,7 @@ while session:
 
     for i in range(16):
         for j in range(16):
-            boardPixels[i][j].draw(ecran)
+            boardPixels[i][j].draw(g)
 
     # on met à jour l'écran
     pygame.display.flip()
